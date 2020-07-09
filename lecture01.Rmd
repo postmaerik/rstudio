@@ -1,0 +1,588 @@
+---
+title: "BIOM4025 - Lecture 1"
+subtitle: "Introduction to Statistical Modelling"
+date: "23 September 2019"
+author: "Erik Postma / e.postma@exeter.ac.uk"
+company: "Centre for Ecology and Conservation / College of Life and Environmental Sciences / University of Exeter"
+www: "http://biosciences.exeter.ac.uk/staff/index.php?web_id=Erik_Postma"
+runtime: shiny
+output:
+  ioslides_presentation:
+     transition: 0
+     widescreen: true
+css: lecture.css
+keep_md: true
+---
+
+<!-- 
+Comments here
+--> 
+
+```{r setup, include=FALSE}
+library(shiny)
+knitr::opts_chunk$set(echo = FALSE, comment = "")
+```
+
+
+# Today
+
+## Introduction to Statistical Modelling
+
+* Module overview  
+
+* What is `R`, and why use it?  
+* Why should you learn statistics?  
+
+* Introduction into statistical modelling    
+* Null-hypothesis testing  
+
+## Module overview {.build}
+
+* Starting with the basics and gradually add complexity  
+    + Correlation, regression, t-test, ANOVA
+    + Linear Models 
+    + Generalised Linear Models  
+    + Linear Mixed Models  
+    + Generalised Linear Mixed Models   
+
+<div>
+* Data collection and experimental design  
+* Interpreting, visualising and reporting results  
+</div>
+
+<div>
+* Recommended text book:  
+Crawley, 2015. *Statistics: An introduction using R*  
+
+<img src="./pictures/crawley.jpg" style="position: absolute; top: 400px; left: 880px; width: 200px">
+</div>
+
+## Module overview: Other modules
+
+* _Art of Science_ by Andy Russell   
+    + The scientific method
+    + Which questions to ask?
+    + How to formulate a hypotheses and predictions?
+    + How to report your results?
+* _Approaches in Evolutionary & Behavioural Ecology_ by Bram Kuijper _et al._      
+    + Experimental design   
+    + Statistical power   
+* Field course and Research Project   
+
+## Module overview  {.build}
+<div>    
+* Lots of online resources
+    + <a href="https://www.datacamp.com/">DataCamp</a>
+    + <a href="https://www.coursera.org/">Coursera</a>
+    + <a href="https://www.r-project.org/mail.html">R mailing lists</a>
+    + <a href="https://stackoverflow.com/">Stack Overflow</a>
+    + <a href="http://www.google.com/search?q=import+data+r">Google</a>
+</div>
+
+<div>    
+<img src="./pictures/r-meme.jpg"
+    style="position: absolute; top: 150px; left:500px" width=50%>
+</div>
+
+## Module overview  {.build}
+
+- **Lectures**
+    + Emphasis on theoretical concepts
+    + Lots of practical examples
+- **2-hour computer practicals**  
+    + Emphasis on practical implementation in `R`
+    + Analyse real data from published papers
+    + Two groups  
+    + Demonstrators available to answer all your queries  
+
+## Module overview  {.build}
+<div >
+- **Online ELE Forum**  
+    + Ask for help and help others  
+</div>
+<div>
+- **Help sessions** 
+    + During this module
+    + During your research projects
+</div>
+
+
+## Assessments {.build}
+<div>
+- **Practical exercises** (10%)
+    + ELE quiz
+- **Problem sheet** (40%)  
+    + Data handling and statistics in `R` 
+    + Available on October 21
+    + Hand-in via TurnItIn (deadline November 11)
+</div>
+<div>
+- **In-class test** (50%)  
+    + Experimental design, interpretation of results  
+    + December 12 from 14:00-15:00 in Peter Lanyon Lecture 4
+</div>
+
+## BIOM4025 ELE page  {.build}
+<div>- http://vle.exeter.ac.uk/course/view.php?id=389  
+- Announcements
+- Recommended literature  
+</div>
+<div>
+- Slides of all lectures in HTML and PDF format  
+- Material for all practicals (print yourself!)
+- Problem sheet and TurnItIn link for submission 
+</div>
+<div>
+- Forum  
+- Survey (*Are you experienced?*)  
+- Data collection sheet (*Model seeks data*)  
+</div>
+
+## Model seeks data
+<a href="https://goo.gl/forms/ILSqKVEjiWVHJUoz2" style="border: 0 none; text-decoration: none">
+<img src="./pictures/data2.png" style="width: 100%">
+</a>
+
+## What is `R`? {.build}
+<div>
+- Statistical computing language  
+- Evolved from the `S` and the (very expensive) `S-plus` language
+- Command line interface
+- Integrated Development Environment (IDE) (*e.g.* `RStudio`)
+
+<div style="position: absolute; top: 250px; left: 850px; width: 150px">
+<img src="./pictures/Rlogo.png" width=100%>
+</div>
+<div style="position: absolute; top: 420px; left: 850px; width: 150px">
+<div style="margin-top: 100px">
+<img src="./pictures/RStudio-Logo.png" width=100%>
+</div>
+</div>
+</div>
+
+<div>
+- Calculator  
+- Data exploration and visualisation  
+- Tool for statistical modelling  
+- User-created packages to do specialised tasks 
+</div>
+
+
+## Why `R`?  {.build}
+<div>
+- Statistics is already hard enough, so why make it even harder?  
+    + Open source (*Free as in Beer*, and *Free as in Speech*)    
+    + Powerful     
+    + Flexible     
+    + Reproducible
+    
+    + Learn programming skills   
+    + `R` is becoming the *'lingua franca'* of data science  
+    + Used in academia and industry  
+
+<div style="position: absolute; top: 250px; left: 850px; width: 150px">
+<img src="./pictures/Rlogo.png" width=100%>
+</div>
+</div>
+<div>
+- BUT, other software will usually give you the same answer
+- Good science does NOT equal using `R`
+</div>
+
+
+
+## Experience with `R`?
+```{r, fig.align = "center", out.width = "100%"}
+data <- read.table("./data/Survey-3.csv", sep=",", header=T)
+data <- data[,6]
+levels(data)[6] <- "I should be teaching this course!"
+
+data <- factor(data, levels(data)[c(2,1,5,3,4,6)])
+
+freq <- table(data)
+par(mai=c(1,4,0,1), bg=NA )
+barplot(rev(freq), horiz = TRUE, las=1, xlab = "frequency")
+```
+
+## A message from the past
+<center><img src="./pictures/tweet1.png" width=800px></center>
+
+## A message from the past
+<center><img src="./pictures/tweet2.png" width=800px></center>
+
+## Why this module?
+- No scientific research without data  
+- The most important quantitative tool across all of the life sciences  
+- One of the most sought-after skills in academia and beyond  
+
+> The stakeholder survey suggested that the following issues might be affecting employment outcomes for Biological Sciences graduates:  
+> - Graduates lacking mathematical skills.
+
+> ...examining the mathematical/quantitative skills (and possibly also computer-
+programming) content of biological sciences programmes.
+
+<p class="author">Wakeham Review of STEM Degree Provision and Graduate Employability, 2016</p>
+
+# Statistical foundations
+
+## Why do we need statistics?  
+
+* Our job is to try to make sense of the world by collecting, analysing and interpreting data  
+* The truth is beyond our reach, but we can try to get as close to the truth as possible   
+* Statistics may be defined as...  
+
+> ...methods for making wise decisions in the face of uncertainty. 
+
+<p class="author">W.A. Wallis</p>
+
+
+## Why do we need statistics?  
+
+<div>
+<img style="position: absolute; top: 0px; left:0px" src="./pictures/the-truth.jpg" width=100%>
+</div>
+
+## Why do we need to do statistics? {.build}
+
+<div>
+* We want to describe what the world looks like
+* It is impossible to measure everything  
+* We can only measure a sample  
+* Our sample is _assumed_ to be representative of the population at large (_i.e._ random and unbiased)
+* The larger our sample, to closer we get to the truth
+</div>
+<div>
+* Population &rarr; Representative (random) sample &rarr; Population
+* Real world &rarr; Data &rarr; (Statistical) model &rarr; Real world
+</div>
+<div>
+> All models are wrong, but some are useful.
+
+<p class="author">George E.P. Box</p>
+</div>
+
+## Estimating the mean
+* The mean of our sample will be related to the true mean
+* Because of random sampling, it will pretty much never be identical to the true mean
+* However, _on average_ the mean of our sample is equal to the true mean (_i.e._ our estimate is unbiased/accurate)
+* The variation in our _estimated_ means around the _true_ mean goes down when sample size increases (the precision increases)
+
+## Estimating the mean
+<div style="float: left; width: 20%">
+```{r}
+      sliderInput("N",
+                  "Sample size:",
+                   value = 1,
+                   min = 1,
+                   max = 100)
+      sliderInput("reps",
+                  "Number of repetitions:",
+                  value = 1,
+                  min = 1,
+                  max = 1000)
+      checkboxInput("checkbox", label = "Add samples one at a time", value = FALSE)
+      actionButton("resample",  label = "Draw new sample")
+```
+</div>
+
+<div  style="float: right; width: 70%">
+```{r}
+means <- NULL
+means_offset <- 0
+
+MU <- 10
+SD <- 1
+
+data <- reactive({
+  input$checkbox
+  input$resample
+  input$reps
+  rnorm(input$N, MU, SD)
+})
+
+doReset <- reactive({
+    input$checkbox
+    input$N
+    input$reps
+
+    means<<-NULL
+    print("reset")
+})
+
+renderPlot(bg=NA, {
+  # Plot parameters...
+  tcol="orange"      # fill colors
+  acol="orangered"   # color for added samples
+  tscale=2;          # label rescaling factor
+
+  N    <- input$N
+  reps <- input$reps
+  x <- data()
+  doReset()
+
+  # Add to list of sample means or repeat sampling reps times depending on checkbox
+  if (input$checkbox==TRUE) {
+    if (length(means)==0) {means_offset <<- input$resample}
+    means[input$resample-means_offset+1]<<-mean(x)
+  }
+  else {
+    means <<- 1:reps
+    for (i in 1:reps-1) {
+      means[i] <-mean(rnorm(N, MU, SD))
+      means[reps] <- mean(x)
+    }
+  }
+
+  # set plot range
+  xmin = MU - (3*SD)
+  xmax = MU + (3*SD)
+  
+  # do not plot outliers
+  xrm <- x
+  xrm[x > xmax]<-NA
+  xrm[x < xmin]<-NA
+  means[means>xmax]<-NA
+  means[means<xmin]<-NA
+  
+  par(mfrow=c(3,1),mar=c(8,6,2,2)) 
+
+  # plot true distribution
+  x0 = seq(xmin,xmax,length.out=512);
+  y0 = dnorm(x0, MU, SD)
+  y0 = y0/sum(y0);
+  plot(x0,y0,type="l", lwd=0, col=NULL, main="Unknown true distribution",xlab="Trait value", 
+       ylab="Probability", frame=F, cex.lab=tscale, cex.axis=tscale, cex.main=tscale, cex.sub=tscale) 
+  polygon(c(xmin, x0, xmax),c(0,y0,0),col=tcol,border=NA)
+  abline(v=MU, lty=2)
+  
+  
+  # plot typical sample
+
+  hist(xrm, 
+       breaks=seq(xmin,xmax,length.out=50),
+       main="Distribution of a sample",
+       warn.unused = FALSE,
+       col=tcol,
+       border=tcol,
+       xlab="",
+       cex.lab=tscale,
+       cex.axis=tscale,
+       cex.main=tscale,
+       cex.sub=tscale)
+  if(N>1) abline(v=mean(x), lty=2)
+  
+  
+# plot list of sample means with the latest sample highlighted
+breaks_mh = seq(xmin,xmax,length.out=100)
+
+nh<-hist(means,
+         breaks=breaks_mh,
+         main="Distribution of sample means",
+         warn.unused = FALSE,
+         col=tcol,
+         border=tcol,
+         xlab="Estimated mean",
+         cex.lab=tscale,
+         cex.axis=tscale,
+         cex.main=tscale,
+         cex.sub=tscale)
+  hist(means[length(means)],
+       breaks=breaks_mh,
+       col=acol,
+       border=acol,
+       add=TRUE,
+       ylim=c(0,max(y0,max(nh$counts))))
+    abline(v=mean(means), lty=2)
+
+
+  }, width=600,height=600)
+```
+</div>
+
+
+<!-- ## Why do we need statistics?  {.build} -->
+
+<!-- <div> -->
+<!-- * The challenge:    -->
+<!--     + Everything varies   -->
+<!--     + A random sample may by chance not be representative of the population    -->
+<!--     + Samples from two populations that are very different may be identical    -->
+<!--     + Samples from identical populations may be very different    -->
+<!-- </div> -->
+<!-- <div> -->
+<!-- * We need to distinguish between interesting (biological) and uninteresting variation (sampling variation, error, noise)     -->
+<!-- * How much variation do we expect by chance alone, if nothing interesting is     -->
+<!-- going on?   -->
+<!-- * *The null-hypothesis* -->
+<!-- </div> -->
+
+
+
+
+
+## Null hypothesis testing
+<div style="float: left; width: 80%">
+
+* Null hypothesis $H_0$: There is no relationship, no difference...
+* A good null hypothesis is capable of rejection, *i.e.* falsifiable
+* The null hypothesis can be proven false, but not right
+* Do we have enough evidence against the null hypothesis to reject it?
+* 'Innocent until proven guilty'
+* **Absence of evidence is not evidence of absence**  
+
+* $H_0$: All swans are white  
+* Lots of white swans don't make $H_0$ true  
+* One black swan makes $H_0$ false  
+
+</div>
+
+<div style="float: left; width: 20%">
+<img src="./pictures/Karl_Popper.jpg" width="100%">
+<figcaption style="margin-bottom: 50px">Karl Popper</figcaption>
+<img src="./pictures/Black_Swans.jpg" width="100%">
+</div>
+
+## Null hypothesis testing {.build}
+<div>
+* Can we reject null-hypothesis $H_0$ in favour of the alternative hypothesis $H_1$?
+* Is the result *unlikely* to be the result of chance, *i.e.* if the null-hypothesis
+were true?
+* The probability of finding an effect that is at least as big if the null-hypothesis were true: *p-value*
+* Is the variation **statistically significant**?
+</div>
+<div>
+* Unlikely: often defined as *less than 5% of the time*
+</div>
+
+## Null hypothesis testing {.build}
+
+* Difference between groups:
+    + The means of two samples will never be the same, even if they come from the same population
+    + How likely are we to observe a difference between two samples at least this large _by chance alone_?
+
+<div>
+* Relationship between two continuous variables:
+    + The correlation between two variables is never exactly zero
+    + How likely are we to observe a correlation that is at least this strong by chance alone?
+</div>
+<div>
+* Probability (p-value) smaller than, for example, 0.05?
+* Statistical significance   
+</div>
+
+## Type I and Type II errors
+* We can make two types of mistakes:
+
+* **Type I error:** Incorrect rejection of a true null hypothesis (p-value)
+    + Similar to an incorrect diagnosis, a false fire alarm  
+
+
+* **Type II error:** Failure to reject a false null hypothesis (1-power)  
+    + Similar to a diagnostic test missing a disease, a fire but alarm not going off
+
+|                     | $H_0$: true            | $H_0$: false             |
+|--------------------:|:----------------------:|:------------------------:|
+| test: do not reject |  correct               |  Type II error (1-power) |
+| test: reject        | Type I error (p-value) | correct (power)          |
+
+
+## The limitations of p-values {.build}
+<div>
+* Any threshold (*e.g.* p = 0.05) is arbitrary
+* Be sceptical of attempts to turn a continuous variable into a *yes* or *no* answer!
+</div>
+<div>
+* Probability of finding an effect at least as big if the null-hypothesis is true
+* NOT the probability that the null-hypothesis is true
+</div>
+<div>
+* Highly dependent on sample size
+* Not a measure of the size of the effect
+* *'Is there an effect?'* rather than *'How strong is the effect?'*
+</div>
+<div>
+* P-values are not 'wrong' but have their limitations
+* Always report p-value *and* effect size and consider alternatives
+</div>
+
+
+
+## Are males heavier than females?
+
+<div style="float: right; width: 10%">
+```{r}
+sliderInput("ssd", label="male/female", min = 0.75, max = 1.5, value = 1, step=0.05)
+sliderInput("n", label="sample size", min = 5, max = 500, value = 10, step=1)
+actionButton("run", label = "Run!")
+checkboxGroupInput("plot", label = "", 
+    choices = list("mean" = 1, "data" = 2), # "sd" = 3, "se"=4),
+    selected = 1)
+checkboxInput("ttest", label = "test")
+```
+</div>
+
+<div style="float: right; width: 90%">
+```{r plot.means}
+set.seed(27)
+mean.female <- 40
+sd <- 6
+m <- eventReactive(input$run, {rnorm(input$n, mean.female*input$ssd, sd)})
+f <- eventReactive(input$run, {rnorm(input$n, mean.female, sd)})
+mean.m <- reactive({mean(m())})
+mean.f <- reactive({mean(f())})
+sd.m <- reactive({sd(m())})
+sd.f <- reactive({sd(f())})
+se.m <- reactive({sd(m())/sqrt(length(m()))})
+se.f <- reactive({sd(f())/sqrt(length(f()))})
+
+renderPlot(height = 400, bg=NA, {
+  m <- m(); f <- f(); mean.m <- mean.m(); mean.f <- mean.f(); sd.m <- sd.m()
+  sd.f <- sd.f(); se.m <- se.m(); se.f <- se.f()
+par(bg=NA, cex=1.5, pch=19, font.lab=2, pty='s', mar=c(2,4.1,1,1), lwd=2)
+plot(1,1, type = 'n', xlim=c(0.5,2.5), ylim=c(min(c(m,f)),max(c(m,f))), xaxt="n", xlab="", ylab="body mass (g)")
+  
+if (2 %in% input$plot) points(c(rep(1, length(m())), rep(2, length(f))), c(m,f), col=rgb(0.6,0.6,0.6,0.3), pch=19, cex=2)
+if (1 %in% input$plot) points(c(mean.m, mean.f), pch=19, cex=2)
+if (3 %in% input$plot) arrows(c(1,2),c(mean.m-sd.m,mean.f-sd.f), c(1, 2), c(mean.m+sd.m, mean.f+sd.f), length=0.05, angle=90, code=3, col="black", lty=1)
+if (4 %in% input$plot) arrows(c(1,2),c(mean.m-se.m,mean.f-se.f), c(1, 2), c(mean.m+se.m, mean.f+se.f), length=0.05, angle=90, code=3, col="black", lty=1)
+
+axis(side=1,at=1:2,labels=c("males","females"))
+})
+
+conditionalPanel(condition='input["ttest"]', 
+    (HTML("<b>Test</b>")),
+    (renderPrint({
+        paste("p-value: ", round(t.test(m(),f(), var.equal = TRUE)$p.value, 4), sep = "")
+    })
+  )
+)
+```
+</div>
+
+
+# Summary
+
+## Introduction to Statistical Modelling
+* **Overview** of the course (lectures, practicals, assessments)   
+
+* Statistics allows distinguishing between **interesting and uninteresting variation**  
+* Find biology amongst noise  
+
+* Hypothesis testing  
+* Assess the weight of evidence **against the null-hypothesis**  
+
+* **Statistical** significance  
+* Not to be confused with **biological** significance  
+
+# Next time
+
+## Data and distributions
+* Different types of data  
+* Distributions (and the normal distribution in particular)  
+* Quantifying variation  
+* Making probabilistic statements about data and estimates  
+
+* Crawley, 2015. *Statistics: An introduction using R*  
+     + Chapter 3: Central Tendency
+     + Chapter 4: Variance
+     + Chapter 5: Single Samples
